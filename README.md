@@ -109,4 +109,8 @@ git checkout graphicproject-remote/main -- app/modules/graphic_shared
 
 
 ## 参考
-[Subtree 与 Submodule](https://gb.yekai.net/concepts/subtree-vs-submodule)
+* [Subtree 与 Submodule](https://gb.yekai.net/concepts/subtree-vs-submodule)
+> commit: 父仓库直接提交父子仓库目录里的变动。若修改了子仓库的文件，则需要执行 subtree push
+
+* [Git subtree用法与常见问题分析](https://zhuanlan.zhihu.com/p/253148857)
+> 四个方案个人认为的排序是subtree = submodule > dll > npm
