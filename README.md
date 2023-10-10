@@ -2,7 +2,7 @@
 
 ## dir structure && description
 
-
+```
 ├── README.md                 当前文件
 └── app                       应用代码目录
     ├── base_shared           基础设施代码 **与其它项目可共享的**
@@ -23,7 +23,7 @@
         ├── graphic_shared     graphic模块 **共享自(来自于)其他项目**
         └── home
             └── index.js
-
+```
 
 
 
