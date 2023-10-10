@@ -26,7 +26,7 @@
 ```
 
 
-## 方式1： git subtree 合并某仓库的指定目录 到 另一仓库的指定目录
+## 方式1： git subtree 合并某仓库 ~~的指定目录~~ 到 另一仓库的指定目录
 
 ### 添加 [GraphicRepoDemo](https://github.com/zyestin/GraphicRepoDemo) 仓库作为远程仓库，以便后续使用它的内容
 ```
