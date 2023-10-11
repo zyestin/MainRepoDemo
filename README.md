@@ -215,7 +215,7 @@ hint: or --ff-only on the command line to override the configured default per
 hint: invocation.
 ```
 
-### 多人协作
+### 多人协作 在主仓拉取子仓代码
 
 * 对于首次，直接操作`submodule update` ?  不，首次需要先操作`git submodule update --init`  
   他人首次拉取[GraphicRepoDemo](https://github.com/zyestin/GraphicRepoDemo)后，会发现`app/modules/graphic_shared`目录下的代码是空的，看来需要额外的操作去同步这块代码
@@ -248,6 +248,26 @@ Submodule path 'app/modules/graphic_shared': checked out '3ab3f32779995d68522878
 > 本以为 .gitmodule文件中记录了 `path = app/modules/graphic_shared`，以为直接执行`git submodule update`，不用指定路径了，
 > 但依然需要执行完整的`git submodule update --remote app/modules/graphic_shared`
 
+### 多人协作 子仓库多人次修改和提交
+
+* 没有冲突时  
+在主仓改子仓，commit但不push；  
+在子仓改，commit且push
+<img width="1521" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/d86ebc33-a80d-4040-9464-762ffd17ea1a">
+然后，在主仓先pull后push，即点击`Sync Changes`
+<img width="1127" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/d0731390-59db-4f74-b4df-ea8758a768c4">
+会报错一次，如下，执行一次`git config pull.rebase false`就好了，以后`Sync Changes`将不再被中断，直接会进行merge
+```
+hint: You have divergent branches and need to specify how to reconcile them.
+...
+```
+VSC 通过`Sync Changes`执行 pull && push后，本地、远程子仓库更新成功
+<img width="1363" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/d3f9f9d2-b976-4b15-93bd-6a52a25719f3">
+
+* 有冲突时
+VSC操作`Sync Changes`后，正常走熟悉的merge流程，标记出了冲突代码
+<img width="1204" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/829fb90c-ba72-475d-862b-627b904016f5">
+然后，修复掉冲突代码，操作 `stage`、`commit`、`Sync Changes`就可以了
 
 
 ## 参考
