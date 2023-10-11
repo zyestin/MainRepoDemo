@@ -2,7 +2,7 @@
 How do multiple repos share dir/code/module/repo, some solutions as below:
 * git subtree  
   较强不可忍受点：在VSC主仓库修改了子仓库代码，subtree push同步子仓库改动到远端后，发现子仓库的commit记录会含有主仓库的commit记录，被严重污染。。。
-* git fetch && checkout方式 merge 子仓库代码 到 主仓库指定的目录
+* git fetch && checkout方式 merge 子仓库代码 到 主仓库指定的目录  
   很强不可忍受点：与手动从子仓库拷贝代码到主仓库方式一样，这些diff，又会出现在主仓库 又需要重新在主仓库commit。。。
 * soft link (电脑上建立目录软链)  
   较强不可忍受点：.gitignore是忽略了主仓库中的 子仓库的所有代码的，相当于远端代码库 缺了这一块，然而，连这块的关联信息 该如何解决？ 
@@ -172,27 +172,28 @@ git commit -m "test: 在父仓库更改子仓库代码，更新远端子仓库�
 commit后，父仓库下`git status`就有变化了，`app/modules/graphic_shared`的`commit id`变化了
 <img width="484" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/80a80098-91a4-4f2f-9b9c-31258d2248f8">
 
-* push  子仓库的改动同步到远端子仓库
-```
-///push到父仓库
-...
-
-///push子仓库
-cd app/modules/graphic_shared
-//... add commit ... 可直接在VSC操作
-git push origin HEAD:graphic2-remote       //可以指定 main 或别的 远程分支
-Enumerating objects: 10, done.
-Counting objects: 100% (10/10), done.
-Delta compression using up to 8 threads
-Compressing objects: 100% (4/4), done.
-Writing objects: 100% (6/6), 629 bytes | 629.00 KiB/s, done.
-Total 6 (delta 2), reused 0 (delta 0), pack-reused 0
-remote: Resolving deltas: 100% (2/2), completed with 1 local object.
-To github.com:zyestin/Graphic2Repo.git
-   16b612c..0833e03  HEAD -> graphic2-remote
-```
-下图可见，子仓库的git log非常纯粹，commit 都是子仓库代码改动信息
-<img width="1014" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/06835f74-5d71-4863-8fab-e1e51e8c0adc">
+* push 子仓库的改动同步到远端子仓库
+  * 通过命令
+    ```
+    cd app/modules/graphic_shared
+    //... add commit ... 可直接在VSC操作
+    git push origin HEAD:graphic2-remote       //可以指定 main 或别的 远程分支
+    Enumerating objects: 10, done.
+    Counting objects: 100% (10/10), done.
+    Delta compression using up to 8 threads
+    Compressing objects: 100% (4/4), done.
+    Writing objects: 100% (6/6), 629 bytes | 629.00 KiB/s, done.
+    Total 6 (delta 2), reused 0 (delta 0), pack-reused 0
+    remote: Resolving deltas: 100% (2/2), completed with 1 local object.
+    To github.com:zyestin/Graphic2Repo.git
+       16b612c..0833e03  HEAD -> graphic2-remote
+    ```
+    下图可见，子仓库的git log非常纯粹，commit 都是子仓库代码改动信息
+    <img width="1014" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/06835f74-5d71-4863-8fab-e1e51e8c0adc">
+  * 通过VSC也可以push子仓库代码
+    <img width="1340" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/81d10634-660e-4953-8411-ea63f5310524">
+    > VSC push后，确实子仓库远端ok了
+    > <img width="1276" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/7e0442c0-d856-4b2a-94ea-3b2e6d920ae9">
 
 > 一般`git push`前还是先`git pull`一次，以免他人push了，就会报如下错误  
 > 报这个错的话，就执行`git config pull.rebase false`，然后再`pull`
