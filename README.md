@@ -1,4 +1,10 @@
-# How do multiple repos share dir/code/module
+# 多个仓库 如何 共享某一模块/代码
+How do multiple repos share dir/code/module, some solutions as below:
+* git subtree
+* git fetch && checkout方式 merge
+* soft link (电脑上建立目录软链)
+* git submodule
+* multiple workspace
 
 ## dir structure && description
 
@@ -179,7 +185,8 @@ To github.com:zyestin/Graphic2Repo.git
 下图可见，子仓库的git log非常纯粹，commit 都是子仓库代码改动信息
 <img width="1014" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/06835f74-5d71-4863-8fab-e1e51e8c0adc">
 
-    * 一般`git push`前还是先`git pull`一次，以免他人push了，就会报如下错误
+> 一般`git push`前还是先`git pull`一次，以免他人push了，就会报如下错误  
+> 报这个错的话，就执行`git config pull.rebase false`，然后再`pull`
 ```
 git pull origin graphic2-remote
 From github.com:zyestin/Graphic2Repo
@@ -197,7 +204,6 @@ hint: preference for all repositories. You can also pass --rebase, --no-rebase,
 hint: or --ff-only on the command line to override the configured default per
 hint: invocation.
 ```
-报这个错的话，就执行`git config pull.rebase false`，然后再`pull`
 
 
 
