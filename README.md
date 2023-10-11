@@ -205,6 +205,39 @@ hint: or --ff-only on the command line to override the configured default per
 hint: invocation.
 ```
 
+### 多人协作
+
+* 对于首次，直接操作`submodule update` ?  不，首次需要先操作`git submodule update --init`  
+  他人首次拉取[GraphicRepoDemo](https://github.com/zyestin/GraphicRepoDemo)后，会发现`app/modules/graphic_shared`目录下的代码是空的，看来需要额外的操作去同步这块代码
+```
+git submodule update --init --recursive                15:30:27
+Submodule 'app/modules/graphic_shared' (git@github.com:zyestin/Graphic2Repo.git) registered for path 'app/modules/graphic_shared'
+Cloning into '/Users/yestin/Desktop/gitfiles/RepoShare/GraphicRepoDemo2/app/modules/graphic_shared'...
+Submodule path 'app/modules/graphic_shared': checked out '6ee3837c117a0f9b2696f3f0b3099ff21333b235'
+```
+操作完`git submodule update --init --recursive` 发现`app/modules/graphic_shared`目录下的代码已经同步过来了
+<img width="1161" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/46239afe-e019-4ec3-9ffb-c742beb7648b">
+
+> 直接操作，会出现什么问题呢？会有如下提示
+```
+git submodule update --remote app/modules/graphic_shared
+Submodule path 'app/modules/graphic_shared' not initialized
+Maybe you want to use 'update --init'?
+```
+
+* 非首次，操作`git submodule update --remote app/modules/graphic_shared`
+    * 当一个同事更新了 子仓库[Graphic2Repo](https://github.com/zyestin/Graphic2Repo) 其他同事如何感知呢？  
+    使用sourcetree的同事，在主仓库是感知不到有未pull的commit的，（VSC本来就不支持提示有N个待pull的commit）
+    此时可以打开VSC的`commit graph`可视化窗口，能看出是否有待pull的commit，如下图
+    <img width="1230" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/886ea7f5-8844-4474-9ebc-b53825ce7175">
+    * 执行 在主仓库拉取子仓库代码
+```
+git submodule update --remote app/modules/graphic_shared
+Submodule path 'app/modules/graphic_shared': checked out '3ab3f32779995d68522878d563dfb63bfbd5f2ab'
+```
+> 本以为 .gitmodule文件中记录了 `path = app/modules/graphic_shared`，以为直接执行`git submodule update`，不用指定路径了，
+> 但依然需要执行完整的`git submodule update --remote app/modules/graphic_shared`
+
 
 
 ## 参考
