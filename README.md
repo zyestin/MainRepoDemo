@@ -1,10 +1,19 @@
-# 多个仓库 如何 共享某一模块/代码
-How do multiple repos share dir/code/module, some solutions as below:
-* git subtree
-* git fetch && checkout方式 merge
-* soft link (电脑上建立目录软链)
-* git submodule
-* multiple workspace
+# 多个仓库 如何 共享某一模块/代码/仓库
+How do multiple repos share dir/code/module/repo, some solutions as below:
+* git subtree  
+  较强不可忍受点：在VSC主仓库修改了子仓库代码，subtree push同步子仓库改动到远端后，发现子仓库的commit记录会含有主仓库的commit记录，被严重污染。。。
+* git fetch && checkout方式 merge 子仓库代码 到 主仓库指定的目录
+  很强不可忍受点：与手动从子仓库拷贝代码到主仓库方式一样，这些diff，又会出现在主仓库 又需要重新在主仓库commit。。。
+* soft link (电脑上建立目录软链)  
+  较强不可忍受点：.gitignore是忽略了主仓库中的 子仓库的所有代码的，相当于远端代码库 缺了这一块，然而，连这块的关联信息 该如何解决？ 
+  一般不可忍受点：在VSC主仓库修改了子仓库代码，（可以忍受：需要去真正的子仓库去提交代码），就必然会多开一个子仓库窗口 进行git操作。
+* git submodule  
+  需要注意地方：在主仓库中修改子仓库，通过命令先提交子仓库代码，再提交主仓库代码。认为这是顺理成章的，因为子仓库代码改动，本该独立更新
+  > 越来越觉得，这是软链的增强版
+  > 1. 主仓库远端，缺失的子仓库这一块，但`.gitmodule`能表示与具体子仓库的关联关系
+  > 2. 在VSC主仓库修改了子仓库代码，可以在主仓库，打包几个命令，做到在主仓库直接维护子仓库。
+* multiple workspace  
+  暂未实践
 
 ## dir structure && description
 
