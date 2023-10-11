@@ -54,6 +54,7 @@ git subtree add --prefix=app/modules/graphic_shared graphicproject-remote master
 
 * 删掉`MainRepoDemo`和`GraphicRepoDemo`下"app/modules/graphic_shared"
 
+拿[MainRepoDemo](https://github.com/zyestin/MainRepoDemo)试一试
 * 移除`MainRepoDemo`之前的subtree 
 ```
 git remote remove graphicproject-remote
@@ -107,6 +108,98 @@ git checkout graphicproject-remote/main -- app/modules/graphic_shared
 ## 方式3：软链
 在本地`MainRepoDemo`的"app/modules/graphic_shared"，通过软链指向`GraphicRepoDemo`的"app/modules/graphic_shared"
 
+注意：`.gitignore`中需要忽略"app/modules/graphic_shared"，防止提交了这个软链空壳文件上去
+
+## 方式4：git submodule 
+拿[GraphicRepoDemo](https://github.com/zyestin/MainRepoDemo)试一试 往里面关联 一个新的子仓库[Graphic2Repo](https://github.com/zyestin/Graphic2Repo)
+
+### 往`GraphicRepoDemo`的"app/modules/graphic_shared"目录，拉取子仓库`Graphic2Repo`代码
+```
+pwd                                 
+/Users/yestin/Desktop/gitfiles/RepoShare/GraphicRepoDemo
+
+git submodule add git@github.com:zyestin/Graphic2Repo.git app/modules/graphic_shared
+```
+<img width="1146" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/3e16d68f-7b7f-41f4-9023-ee34578df4a5">
+`git submodule add`这个关联操作，只会新增两个改动`.gitmodules`、`app/modules/graphic_shared` （而不会将`graphic_shared`内部的各个文件都作为新增改动）
+
+实际的`app/modules/graphic_shared`目录下的文件，是与 子仓库`Graphic2Repo`代码 一致的
+<img width="856" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/d8fbbc33-4375-4002-b711-a42c96a70e68">
+
+
+### 子仓库`Graphic2Repo`代码更新，更新 父仓库`GraphicRepoDemo`的"app/modules/graphic_shared"目录代码
+```
+git submodule update --remote app/modules/graphic_shared
+Submodule path 'app/modules/graphic_shared': checked out '68e524d1b15e3d678a094e83e6a02d3cb8116fc8'
+```
+`git status`变化：仅`app/modules/graphic_shared`的`commit id`变化了
+<img width="509" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/8ea4787a-2113-4942-8a1b-8bcbd6eb7307">
+
+实际代码变化：父仓库`app/modules/graphic_shared`内代码与子仓库一致了
+<img width="884" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/b16cec7d-1507-46c4-ae1f-f7b8002a17e8">
+
+### 在父仓库更改子仓库代码，将改动更新到子仓库远端
+* 更改代码，保存
+    * 更改前
+    <img width="400" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/88d7e35c-3002-4d1d-bebc-52f9743f1d86">
+    * 更改后
+    <img width="400" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/2dfb4f85-e367-466d-b904-a9b9cb0bda79">
+发现，此时仅子仓库的`git status`有变化。
+> 对比subtree 就会发现在主仓库也发现代码变更信息，那么用subtree就明显不合适了
+>  <img width="452" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/a1ab3d69-fae2-4662-a4aa-1d5a94591f72">
+
+* commit
+```
+cd app/modules/graphic_shared
+git add .
+git commit -m "test: 在父仓库更改子仓库代码，更新远端子仓库代码"
+```
+commit后，父仓库下`git status`就有变化了，`app/modules/graphic_shared`的`commit id`变化了
+<img width="484" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/80a80098-91a4-4f2f-9b9c-31258d2248f8">
+
+* push  子仓库的改动同步到远端子仓库
+```
+///push到父仓库
+...
+
+///push子仓库
+cd app/modules/graphic_shared
+//... add commit ... 可直接在VSC操作
+git push origin HEAD:graphic2-remote       //可以指定 main 或别的 远程分支
+Enumerating objects: 10, done.
+Counting objects: 100% (10/10), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (6/6), 629 bytes | 629.00 KiB/s, done.
+Total 6 (delta 2), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (2/2), completed with 1 local object.
+To github.com:zyestin/Graphic2Repo.git
+   16b612c..0833e03  HEAD -> graphic2-remote
+```
+下图可见，子仓库的git log非常纯粹，commit 都是子仓库代码改动信息
+<img width="1014" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/06835f74-5d71-4863-8fab-e1e51e8c0adc">
+
+    * 一般`git push`前还是先`git pull`一次，以免他人push了，就会报如下错误
+```
+git pull origin graphic2-remote
+From github.com:zyestin/Graphic2Repo
+ * branch            graphic2-remote -> FETCH_HEAD
+hint: You have divergent branches and need to specify how to reconcile them.
+hint: You can do so by running one of the following commands sometime before
+hint: your next pull:
+hint: 
+hint:   git config pull.rebase false  # merge
+hint:   git config pull.rebase true   # rebase
+hint:   git config pull.ff only       # fast-forward only
+hint: 
+hint: You can replace "git config" with "git config --global" to set a default
+hint: preference for all repositories. You can also pass --rebase, --no-rebase,
+hint: or --ff-only on the command line to override the configured default per
+hint: invocation.
+```
+报这个错的话，就执行`git config pull.rebase false`，然后再`pull`
+
+
 
 ## 参考
 * [Subtree 与 Submodule](https://gb.yekai.net/concepts/subtree-vs-submodule)
@@ -114,3 +207,5 @@ git checkout graphicproject-remote/main -- app/modules/graphic_shared
 
 * [Git subtree用法与常见问题分析](https://zhuanlan.zhihu.com/p/253148857)
 > 四个方案个人认为的排序是subtree = submodule > dll > npm
+
+
