@@ -155,10 +155,10 @@ Submodule path 'app/modules/graphic_shared': checked out '68e524d1b15e3d678a094e
 
 ### 在父仓库更改子仓库代码，将改动更新到子仓库远端
 * 更改代码，保存
-    * 更改前
-    <img width="400" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/88d7e35c-3002-4d1d-bebc-52f9743f1d86">
-    * 更改后
-    <img width="400" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/2dfb4f85-e367-466d-b904-a9b9cb0bda79">
+    * 更改前  
+    <img width="400" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/88d7e35c-3002-4d1d-bebc-52f9743f1d86">  
+    * 更改后  
+    <img width="400" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/2dfb4f85-e367-466d-b904-a9b9cb0bda79">  
 发现，此时仅子仓库的`git status`有变化。
 > 对比subtree 就会发现在主仓库也发现代码变更信息，那么用subtree就明显不合适了
 >  <img width="452" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/a1ab3d69-fae2-4662-a4aa-1d5a94591f72">
@@ -277,4 +277,6 @@ VSC操作`Sync Changes`后，正常走熟悉的merge流程，标记出了冲突�
 * [Git subtree用法与常见问题分析](https://zhuanlan.zhihu.com/p/253148857)
 > 四个方案个人认为的排序是subtree = submodule > dll > npm
 
+* GPT 对比 subtree与submodule
+> ![image](https://github.com/zyestin/MainRepoDemo/assets/51897571/50b20661-707c-46b7-93b7-a76547e13878)
 
