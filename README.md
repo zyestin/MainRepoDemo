@@ -1,7 +1,7 @@
 # 多个仓库 如何 共享某一模块/代码/仓库
 How do multiple repos share dir/code/module/repo, some solutions as below:
 * git subtree  
-  ~~较强不可忍受点：在VSC主仓库修改了子仓库代码，subtree push同步子仓库改动到远端后，发现子仓库的commit记录会含有主仓库的commit记录，被严重污染。。。~~[应该是某种操作导致，正常使用不会这样]
+  ~~较强不可忍受点：在VSC主仓库修改了子仓库代码，subtree push同步子仓库改动到远端后，发现子仓库的commit记录会含有主仓库的commit记录，被严重污染。。。~~[应该是某种操作导致，正常使用不会这样]  
   一般不可忍受：子仓库的记录，一旦被主仓库拉取，子仓历史commit记录全都进入主仓；未来在本地主仓更改了子仓代码，在主仓提交后，然后同步到子仓远端，这样的正常操作，主仓的commit其实融合了子仓的代码改动的，显得混乱。而submodule就很纯粹，子仓的更新commit永远在子仓， 主仓仅仅是指定选用子仓的某个commit拉取过来用而已，父子联系上仅仅一个commit号即可。
 * git fetch && checkout方式 merge 子仓库代码 到 主仓库指定的目录  
   很强不可忍受点：与手动从子仓库拷贝代码到主仓库方式一样，这些diff，又会出现在主仓库 又需要重新在主仓库commit。。。
@@ -104,6 +104,8 @@ To github.com:zyestin/GraphicRepo.git
 ```
 可以看到子仓库，有许多待拉取的，吓人
 <img width="1269" alt="image" src="https://github.com/zyestin/MainRepoDemo/assets/51897571/6b73e49d-531b-45af-bd0e-c703bd70da90">
+
+> 注：应该是某种操作导致，正常使用不会这样。 正常情况下，在本地主仓更改了子仓，提交主仓后，若同步到子仓，仅仅只是从主仓中挑出属于子仓代码 进行合并提交到子仓远端。
 
 * 子仓库 pull
 可以看到，在父仓库对子仓库做的修改，已经同步过来了
