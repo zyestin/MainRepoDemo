@@ -1,7 +1,6 @@
 # 多个仓库 如何 共享某一模块/代码/仓库
 How do multiple repos share dir/code/module/repo, some solutions as below:
 * git subtree  
-  ~~较强不可忍受点：在VSC主仓库修改了子仓库代码，subtree push同步子仓库改动到远端后，发现子仓库的commit记录会含有主仓库的commit记录，被严重污染。。。~~[应该是某种操作导致，正常使用不会这样]  
   一般不可忍受：子仓库的记录，一旦被主仓库拉取，子仓历史commit记录全都进入主仓；未来在本地主仓更改了子仓代码，在主仓提交后，然后同步到子仓远端，这样的正常操作，主仓的commit其实融合了子仓的代码改动的，显得混乱。而submodule就很纯粹，子仓的更新commit永远在子仓， 主仓仅仅是指定选用子仓的某个commit拉取过来用而已，父子联系上仅仅一个commit号即可。
 * git fetch && checkout方式 merge 子仓库代码 到 主仓库指定的目录  
   很强不可忍受点：与手动从子仓库拷贝代码到主仓库方式一样，这些diff，又会出现在主仓库 又需要重新在主仓库commit。。。
